@@ -12,7 +12,7 @@ from googleapiclient.errors import HttpError
 SCOPES = ['https://www.googleapis.com/auth/documents.readonly']
 
 # The ID of a sample document.
-DOCUMENT_ID = '195j9eDD3ccgjQRttHhJPymLJUCOUjs-jmwTrekvdjFE'
+DOCUMENT_ID = '570087454332-unfcoj8srd085vk7osctqgoclihol8sr.apps.googleusercontent.com'
 
 
 def main():
