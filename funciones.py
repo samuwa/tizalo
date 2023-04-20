@@ -6,7 +6,7 @@ import streamlit as st
 # Credenciales
 
 def gpt_answer(prompt):
-    openai_key = "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"
+    openai_key = st.secrets['GPT_API']
 
     openai.api_key = openai_key
     model_engine = "text-davinci-003"
@@ -32,7 +32,7 @@ def gpt_answer(prompt):
 
 
 def credenciales_google():
-    api_key = 'AIzaSyCwo3H7f87Wkks5T1-TbdGRhPt92YONRkY'
+    api_key = st.secrets['GOOGLE_API']
     return api_key
 
 
