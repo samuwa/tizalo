@@ -32,7 +32,7 @@ def gpt_answer(prompt):
 
 
 def credenciales_google():
-    api_key = st.secrets["GOOGLE_API"]
+    api_key = 'AIzaSyCwo3H7f87Wkks5T1-TbdGRhPt92YONRkY'
     return api_key
 
 
