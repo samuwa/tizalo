@@ -70,6 +70,7 @@ def get_places(api_key, category, location, radius):
         st.write(gmaps)
         # Use the Google Places API to search for businesses in the specified location and category
         places_result = gmaps.places(query=category, location=location, radius=radius)
+        st.write(places_result)
         print(places_result)
 
         # Extract the place IDs for each result
