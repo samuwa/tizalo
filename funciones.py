@@ -67,6 +67,7 @@ def get_places(api_key, category, location, radius):
     adict_list = []
     try:
         gmaps = googlemaps.Client(api_key)
+        st.write(gmaps)
         # Use the Google Places API to search for businesses in the specified location and category
         places_result = gmaps.places(query=category, location=location, radius=radius)
         print(places_result)
