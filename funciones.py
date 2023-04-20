@@ -6,7 +6,7 @@ import streamlit as st
 # Credenciales
 
 def gpt_answer(prompt):
-    openai_key = "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"
+    openai_key = "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"
 
     openai.api_key = openai_key
     model_engine = "text-davinci-003"
