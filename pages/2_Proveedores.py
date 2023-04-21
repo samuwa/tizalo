@@ -32,7 +32,7 @@ categorias = categorias.sort()
 bform = st.form("F2")
 
 ubicacion = bform.text_input("Ubicación")
-radio = 20000
+radio = 200000
 
 categoria = bform.text_input("Categoría")
 
