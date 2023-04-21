@@ -68,7 +68,7 @@ def sort_dicts_by_key(dicts, key, default_value=None, reverse=True):
 def get_places(api_key, category, location, radius):
     adict_list = []
     try:
-        gmaps = googlemaps.Client(api_key)
+        gmaps = googlemaps.Client(api_key, timeout=10)
         st.write(gmaps)
         # Use the Google Places API to search for businesses in the specified location and category
         places_result = gmaps.places(query=category, location=location, radius=radius)
