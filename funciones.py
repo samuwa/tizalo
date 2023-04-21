@@ -64,6 +64,7 @@ def sort_dicts_by_key(dicts, key, default_value=None, reverse=True):
     return sorted(dicts, key=sort_key_func, reverse=reverse)
 # Conseguir Proveedores
 
+@st.cache(allow_output_mutation=True)
 def get_places(api_key, category, location, radius):
     adict_list = []
     try:
