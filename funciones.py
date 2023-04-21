@@ -68,7 +68,7 @@ def get_places(api_key, category, location, radius):
     adict_list = []
     try:
         gmaps = googlemaps.Client(api_key, timeout=10)
-        location = gmaps.geocode(location)
+        geocode_result = gmaps.geocode(location)
         lat = geocode_result[0]['geometry']['location']['lat']
         lng = geocode_result[0]['geometry']['location']['lng']
         location = f"{lat},{lng}"
@@ -88,26 +88,17 @@ def get_places(api_key, category, location, radius):
         for place in details_result: # place["result"]["parameter"]
             adict = {}
             if 'name' in place['result']:
-                #print(f"Name: {place['result']['name']}")
                 adict['name'] = place['result']['name']
             if 'formatted_address' in place['result']:
-                #print(f"Address: {place['result']['formatted_address']}")
                 adict['formatted_address'] = place['result']['formatted_address']
             if 'formatted_phone_number' in place['result']:
-                #print(f"Phone number: {place['result']['formatted_phone_number']}")
                 adict['formatted_phone_number'] = place['result']['formatted_phone_number']
             if 'user_ratings_total' in place['result']:
-                #print(f"Number of reviews: {place['result']['user_ratings_total']}")
                 adict['user_ratings_total'] = place['result']['user_ratings_total']
                 adict['puntaje'] = place['result']['rating'] + puntos_extra(place['result']['user_ratings_total'])
             if 'rating' in place['result']:
-                #print(f"Average rating: {place['result']['rating']}")
                 adict['rating'] = place['result']['rating']
             adict["category"] = category
-
-            # Si tiene 'user_ratings_total" --> Agregar un nuevo key "puntaje" que agregue rating in puntos_extra(user_ratings_total)
-
-
 
             adict_list.append(adict)
         #print()
