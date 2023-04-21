@@ -64,110 +64,51 @@ def sort_dicts_by_key(dicts, key, default_value=None, reverse=True):
     return sorted(dicts, key=sort_key_func, reverse=reverse)
 # Conseguir Proveedores
 
-# def get_places(api_key, category, location, radius):
-#     adict_list = []
-#     try:
-#         gmaps = googlemaps.Client(api_key)
-#         st.write(gmaps)
-#         # Use the Google Places API to search for businesses in the specified location and category
-#         places_result = gmaps.places(query=category, location=location, radius=radius)
-#         st.write(places_result)
-#         print(places_result)
-
-#         # Extract the place IDs for each result
-#         place_ids = [result['place_id'] for result in places_result['results']]
-
-#         # Use the Google Places API to get the details for each place, including its reviews, address, and phone number
-#         details_result = [gmaps.place(place_id, fields=['name', 'rating', 'user_ratings_total', 'formatted_address', 'formatted_phone_number']) for place_id in place_ids]
-
-#         # Print the details for each place
-#         for place in details_result: # place["result"]["parameter"]
-#             adict = {}
-#             if 'name' in place['result']:
-#                 #print(f"Name: {place['result']['name']}")
-#                 adict['name'] = place['result']['name']
-#             if 'formatted_address' in place['result']:
-#                 #print(f"Address: {place['result']['formatted_address']}")
-#                 adict['formatted_address'] = place['result']['formatted_address']
-#             if 'formatted_phone_number' in place['result']:
-#                 #print(f"Phone number: {place['result']['formatted_phone_number']}")
-#                 adict['formatted_phone_number'] = place['result']['formatted_phone_number']
-#             if 'user_ratings_total' in place['result']:
-#                 #print(f"Number of reviews: {place['result']['user_ratings_total']}")
-#                 adict['user_ratings_total'] = place['result']['user_ratings_total']
-#                 adict['puntaje'] = place['result']['rating'] + puntos_extra(place['result']['user_ratings_total'])
-#             if 'rating' in place['result']:
-#                 #print(f"Average rating: {place['result']['rating']}")
-#                 adict['rating'] = place['result']['rating']
-#             adict["category"] = category
-
-#             # Si tiene 'user_ratings_total" --> Agregar un nuevo key "puntaje" que agregue rating in puntos_extra(user_ratings_total)
-
-
-
-#             adict_list.append(adict)
-#         #print()
-#     except ApiError as e:
-#         print(e)
-#     return sort_dicts_by_key(adict_list, key='puntaje')
-
 def get_places(api_key, category, location, radius):
     adict_list = []
-
     try:
-        # Construct the API request URL
-        url = "https://maps.googleapis.com/maps/api/place/textsearch/json"
-        params = {
-            "query": category,
-            "location": location,
-            "radius": radius,
-            "key": api_key,
-        }
+        gmaps = googlemaps.Client(api_key)
+        st.write(gmaps)
+        # Use the Google Places API to search for businesses in the specified location and category
+        places_result = gmaps.places(query=category, location=location, radius=radius)
+        st.write(places_result)
+        print(places_result)
 
-        # Send the request using the requests library
-        response = requests.get(url, params=params)
+        # Extract the place IDs for each result
+        place_ids = [result['place_id'] for result in places_result['results']]
 
-        if response.status_code == 200:
-            places_result = response.json()
+        # Use the Google Places API to get the details for each place, including its reviews, address, and phone number
+        details_result = [gmaps.place(place_id, fields=['name', 'rating', 'user_ratings_total', 'formatted_address', 'formatted_phone_number']) for place_id in place_ids]
 
-            # Extract the place IDs for each result
-            place_ids = [result['place_id'] for result in places_result['results']]
+        # Print the details for each place
+        for place in details_result: # place["result"]["parameter"]
+            adict = {}
+            if 'name' in place['result']:
+                #print(f"Name: {place['result']['name']}")
+                adict['name'] = place['result']['name']
+            if 'formatted_address' in place['result']:
+                #print(f"Address: {place['result']['formatted_address']}")
+                adict['formatted_address'] = place['result']['formatted_address']
+            if 'formatted_phone_number' in place['result']:
+                #print(f"Phone number: {place['result']['formatted_phone_number']}")
+                adict['formatted_phone_number'] = place['result']['formatted_phone_number']
+            if 'user_ratings_total' in place['result']:
+                #print(f"Number of reviews: {place['result']['user_ratings_total']}")
+                adict['user_ratings_total'] = place['result']['user_ratings_total']
+                adict['puntaje'] = place['result']['rating'] + puntos_extra(place['result']['user_ratings_total'])
+            if 'rating' in place['result']:
+                #print(f"Average rating: {place['result']['rating']}")
+                adict['rating'] = place['result']['rating']
+            adict["category"] = category
 
-            # Use the Google Places API to get the details for each place
-            for place_id in place_ids:
-                place_details_url = "https://maps.googleapis.com/maps/api/place/details/json"
-                place_details_params = {
-                    "place_id": place_id,
-                    "fields": "name,rating,user_ratings_total,formatted_address,formatted_phone_number",
-                    "key": api_key,
-                }
-                details_response = requests.get(place_details_url, params=place_details_params)
+            # Si tiene 'user_ratings_total" --> Agregar un nuevo key "puntaje" que agregue rating in puntos_extra(user_ratings_total)
 
-                if details_response.status_code == 200:
-                    place = details_response.json()
 
-                    adict = {}
-                    result = place['result']
-                    if 'name' in result:
-                        adict['name'] = result['name']
-                    if 'formatted_address' in result:
-                        adict['formatted_address'] = result['formatted_address']
-                    if 'formatted_phone_number' in result:
-                        adict['formatted_phone_number'] = result['formatted_phone_number']
-                    if 'user_ratings_total' in result:
-                        adict['user_ratings_total'] = result['user_ratings_total']
-                        adict['puntaje'] = result['rating'] + puntos_extra(result['user_ratings_total'])
-                    if 'rating' in result:
-                        adict['rating'] = result['rating']
-                    adict["category"] = category
 
-                    adict_list.append(adict)
-
-        else:
-            st.error(f"Request failed with status code {response.status_code}")
-            st.write(response.text)
-
-    except Exception as e:
-        st.error(f"Error: {str(e)}")
-
+            adict_list.append(adict)
+        #print()
+    except ApiError as e:
+        print(e)
+        st.write(e)
     return sort_dicts_by_key(adict_list, key='puntaje')
+
