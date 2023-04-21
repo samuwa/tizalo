@@ -2,6 +2,7 @@ import openai
 import googlemaps
 from googlemaps.exceptions import ApiError
 import streamlit as st
+import requests
 
 # Credenciales
 
