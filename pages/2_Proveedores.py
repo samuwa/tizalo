@@ -12,8 +12,6 @@ google_api = func.credenciales_google()
 # Categorías:
 
 
-categorias = categorias.sort()
-
 bform = st.form("F2")
 
 ubicacion = bform.text_input("Ubicación")
