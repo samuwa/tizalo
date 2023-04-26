@@ -15,7 +15,7 @@ google_api = func.credenciales_google()
 bform = st.form("F2")
 
 ubicacion = bform.text_input("Ubicación")
-radio = 10000
+radio = 20000
 
 categoria = bform.text_input("Categoría")
 
