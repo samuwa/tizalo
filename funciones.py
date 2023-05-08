@@ -3,6 +3,9 @@ import googlemaps
 from googlemaps.exceptions import ApiError
 import streamlit as st
 import requests
+import PyPDF2
+from io import StringIO
+import warnings
 
 # Credenciales
 
@@ -104,4 +107,39 @@ def get_places(api_key, category, location, radius):
         print(e)
         st.write(e)
     return sort_dicts_by_key(adict_list, key='puntaje')
+
+
+def read_pdf(file_obj):
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore", category=DeprecationWarning)
+        pdf_reader = PyPDF2.PdfFileReader(file_obj)
+    num_pages = pdf_reader.numPages
+    text = StringIO()
+
+    for page in range(num_pages):
+        text.write(pdf_reader.getPage(page).extractText())
+
+    return text.getvalue()
+
+def chat_gpt_summarize(api_key, document):
+    openai.api_key = api_key
+
+    response = openai.Completion.create(
+        engine="text-davinci-002",
+        prompt=f"De que trata la siguiente cotizacion: {document}",
+        max_tokens=150,
+        n=1,
+        stop=None,
+        temperature=0.5,
+    )
+
+    summary = response.choices[0].text.strip()
+    return summary
+
+
+def summarize_pdf(api_key, pdf_file_obj):
+    pdf_text = read_pdf(pdf_file_obj)
+    summary = chat_gpt_summarize(api_key, pdf_text)
+    return summary
+
 
