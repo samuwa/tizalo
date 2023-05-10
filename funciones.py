@@ -72,7 +72,7 @@ def get_places(api_key, category, location, radius):
     adict_list = []
     try:
         gmaps = googlemaps.Client(api_key, timeout=10)
-        geocode_result = gmaps.geocode(location)
+        geocode_result = gmaps.geocode(location, region='pa')
         lat = geocode_result[0]['geometry']['location']['lat']
         lng = geocode_result[0]['geometry']['location']['lng']
         location = f"{lat},{lng}"
