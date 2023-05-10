@@ -23,6 +23,14 @@ boton = bform.form_submit_button("Buscar")
 
 if boton:
     provs = func.get_places(google_api, categoria, ubicacion, radio)
+    numeros = []
+
+    for x in provs:
+        if 'formatted_phone_number' in provs[provs.index(x)]:
+            numeros.append(x['formatted_phone_number'])
+
+
+    st.download_button(label="**Descargar números**", data=func.create_csv(numeros),file_name=f'numeros_proveedores.csv', mime='text/csv')
     for x in provs:
         if 'name' in provs[provs.index(x)].keys():
             st.write(f'Nombre: **{provs[provs.index(x)]["name"]}**')
