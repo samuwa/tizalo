@@ -14,8 +14,13 @@ google_api = func.credenciales_google()
 
 bform = st.form("F2")
 
-ubicacion = bform.text_input("Ubicación")
-radio = 10000
+ubicacion = bform.selectbox("Ubicación", ["Ciudad de Panamá, Panamá", "San Miguelito,Panamá, Panamá",
+                                            "Tocumen, Panamá, Panamá", "David, Chiriquí, Panamá", "Arraiján, Panamá Oeste, Panamá",
+                                            "Colón, Colón, Panamá", "Chorrera, Panamá Oeste, Panamá", "Santiago, Veraguas, Panamá",
+                                            "Chitré, Herrera, Panamá", "Penonomé, Coclé, Panamá", "Aguadulce, Coclé, Panamá",
+                                            "Las Tablas, Los Santos, Panamá", "Pedregal, Chiriquí, Panamá", "Arraiján, Panamá",
+                                            "Capira, Panamá", "Chepo, Panamá"])
+radio = 5000
 
 categoria = bform.text_input("Categoría")
 
