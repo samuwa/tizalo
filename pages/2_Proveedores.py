@@ -49,6 +49,4 @@ if boton:
             st.write(f'Rating: {provs[provs.index(x)]["rating"]}')
         if 'puntaje' in provs[provs.index(x)].keys():
             st.write(f'Puntaje: {provs[provs.index(x)]["puntaje"]}')
-            st.write('---------------------------------------------')
-
-    st.write(provs)
+        st.write('---------------------------------------------')
