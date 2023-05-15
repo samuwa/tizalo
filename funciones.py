@@ -57,15 +57,15 @@ def puntos_extra(user_ratings_total):
 
 # Ordenar proveedores
 
-def sort_dicts_by_key(dicts, key, default_value=None, reverse=True):
-    if default_value is None:
-        default_value = -float('inf') if reverse else float('inf')
+def sort_dicts_by_keys(dicts, keys, default_values=None, reverse=True):
+    if default_values is None:
+        default_values = [-float('inf') if reverse else float('inf')] * len(keys)
 
     # Custom sorting key function that handles missing keys
     def sort_key_func(item):
-        return item.get(key, default_value)
+        return [item.get(key, default_value) for key, default_value in zip(keys, default_values)]
 
-    return sorted(dicts, key=sort_key_func, reverse=reverse)
+    return sorted(dicts, key=sort_key_func, reverse=reverse)# Conseguir Proveedores
 # Conseguir Proveedores
 
 def get_places(api_key, category, location, radius):
@@ -107,7 +107,7 @@ def get_places(api_key, category, location, radius):
     except ApiError as e:
         print(e)
         st.write(e)
-    return sort_dicts_by_key(adict_list, key='puntaje')
+    return sort_dicts_by_keys(adict_list, key=['puntaje', 'user_ratings_total'])
 
 
 def read_pdf(file_obj):
