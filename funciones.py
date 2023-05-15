@@ -143,15 +143,17 @@ def summarize_pdf(api_key, pdf_file_obj):
     summary = chat_gpt_summarize(api_key, pdf_text)
     return summary
 
+def clean_number(x):
+    return re.sub(r'\D', '', str(x))
+
 def create_csv(numbers):
     # Convert the input list to a Pandas DataFrame
     df = pd.DataFrame(numbers, columns=['number'])
 
     # Remove non-numeric elements from the list and convert to int with "507" added to the beginning
-    df['number'] = df['number'].apply(
-        lambda x: str(x).replace(',', '').replace('.', '').replace('-', '').replace(' ', '').replace('[^0-9]', ''))
+    df['number'] = df['number'].apply(clean_number)
     df['number'] = df['number'].apply(lambda x: '507' + x if not x.startswith('507') else x)
-    df['number'] = pd.to_numeric(df['number'], downcast='integer')
+    df['number'] = pd.to_numeric(df['number'], downcast='integer', errors='coerce')
 
     # Add empty columns for "body" and "name"
     df['body'] = ''
@@ -159,7 +161,3 @@ def create_csv(numbers):
 
     # Rearrange the columns in the desired order
     df = df[['number', 'body', 'name']]
-
-    # Write the data to a CSV file and return as byte string
-    return df.to_csv(index=False, encoding='utf-8').encode('utf-8')
-
