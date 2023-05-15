@@ -107,7 +107,7 @@ def get_places(api_key, category, location, radius):
     except ApiError as e:
         print(e)
         st.write(e)
-    return sort_dicts_by_keys(adict_list, key=['puntaje', 'user_ratings_total'])
+    return sort_dicts_by_keys(adict_list, keys=['puntaje', 'user_ratings_total'])
 
 
 def read_pdf(file_obj):
