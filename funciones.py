@@ -7,6 +7,7 @@ import PyPDF2
 from io import StringIO
 import warnings
 import pandas as pd
+import re
 
 # Credenciales
 
