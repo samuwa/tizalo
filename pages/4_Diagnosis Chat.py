@@ -9,7 +9,7 @@ st.title("Diagnosis 2.0 :female-scientist:")
 st.info("**Mensaje ayuda:** Mi cliente necesita XXX, a que profesional o tipo de empresa debo contactar y que información debo darle?")
 
 # Set org ID and API key
-openai.api_key = "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"
+openai.api_key = st.secrets['GPT_API']
 
 # Initialise session state variables
 if 'generated' not in st.session_state:
