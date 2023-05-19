@@ -6,7 +6,7 @@ from streamlit_chat import message
 
 st.title("Diagnosis 2.0 :female-scientist:")
 
-st.info("**Mensaje ayuda:** Mi cliente necesita XXX, a que profesional o tipo de empresa debo contactar y que información debo darle?")
+st.info("**Mensaje ayuda:** Necesito cotizar XXX, a que profesional o tipo de empresa debo contactar y que información debo darle?")
 
 # Set org ID and API key
 openai.api_key = st.secrets['GPT_API']
@@ -18,7 +18,7 @@ if 'past' not in st.session_state:
     st.session_state['past'] = []
 if 'messages' not in st.session_state:
     st.session_state['messages'] = [
-        {"role": "system", "content": "You are a helpful assistant."}
+        {"role": "system", "content": "Tu trabajo es ayudarme a conseguir cotizaciones."}
     ]
 if 'model_name' not in st.session_state:
     st.session_state['model_name'] = []
