@@ -18,7 +18,7 @@ if 'past' not in st.session_state:
     st.session_state['past'] = []
 if 'messages' not in st.session_state:
     st.session_state['messages'] = [
-        {"role": "system", "content": "Tu trabajo es ayudarme a conseguir cotizaciones."}
+        {"role": "system", "content": "Mi trabajo es conseguir cotizaciones, tu trabajo es ayudarme a entender que información necesito y a que profesional o tipo de empresa debo contactar para cotizar."}
     ]
 if 'model_name' not in st.session_state:
     st.session_state['model_name'] = []
