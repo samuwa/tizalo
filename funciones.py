@@ -69,43 +69,46 @@ def sort_dicts_by_keys(dicts, keys, default_values=None, reverse=True):
     return sorted(dicts, key=sort_key_func, reverse=reverse)# Conseguir Proveedores
 # Conseguir Proveedores
 
-def get_places(api_key, categories, location, radius, results_per_page=20):
+def get_places(api_key, category, location, radius):
     adict_list = []
-    categories = categories.split(',')
+    try:
+        gmaps = googlemaps.Client(api_key, timeout=10)
+        geocode_result = gmaps.geocode(location, region='pa')
+        lat = geocode_result[0]['geometry']['location']['lat']
+        lng = geocode_result[0]['geometry']['location']['lng']
+        location = f"{lat},{lng}"
+        # Use the Google Places API to search for businesses in the specified location and category
+        places_result = gmaps.places(query=category, location=location, radius=radius)
+        print(places_result)
 
-    gmaps = googlemaps.Client(api_key, timeout=10)
-    geocode_result = gmaps.geocode(location, region='pa')
-    lat = geocode_result[0]['geometry']['location']['lat']
-    lng = geocode_result[0]['geometry']['location']['lng']
-    location = f"{lat},{lng}"
+        # Extract the place IDs for each result
+        place_ids = [result['place_id'] for result in places_result['results']]
 
-    for category in categories:
-        category = category.strip()
-        try:
-            places_result = gmaps.places(query=category, location=location, radius=radius, region='pa', language="es")
-            while True:
-                for place in places_result['results']:
-                    if 'rating' in place and place['rating'] >= 3.7:
-                        adict = {}
-                        adict['name'] = place.get('name', None)
-                        adict['formatted_address'] = place.get('formatted_address', None)
-                        adict['formatted_phone_number'] = place.get('formatted_phone_number', None)
-                        adict['user_ratings_total'] = place.get('user_ratings_total', None)
-                        adict['rating'] = place.get('rating', None)
-                        adict["category"] = category
-                        adict_list.append(adict)
+        # Use the Google Places API to get the details for each place, including its reviews, address, and phone number
+        details_result = [gmaps.place(place_id, fields=['name', 'rating', 'user_ratings_total', 'formatted_address', 'formatted_phone_number']) for place_id in place_ids]
 
-                if 'next_page_token' not in places_result:
-                    break  # No more pages available
+        # Print the details for each place
+        for place in details_result: # place["result"]["parameter"]
+            adict = {}
+            if 'name' in place['result']:
+                adict['name'] = place['result']['name']
+            if 'formatted_address' in place['result']:
+                adict['formatted_address'] = place['result']['formatted_address']
+            if 'formatted_phone_number' in place['result']:
+                adict['formatted_phone_number'] = place['result']['formatted_phone_number']
+            if 'user_ratings_total' in place['result']:
+                adict['user_ratings_total'] = place['result']['user_ratings_total']
+                adict['puntaje'] = place['result']['rating'] + puntos_extra(place['result']['user_ratings_total'])
+            if 'rating' in place['result']:
+                adict['rating'] = place['result']['rating']
+            adict["category"] = category
 
-                page_token = places_result['next_page_token']
-                places_result = gmaps.places(query=category, location=location, radius=radius, region='pa', language="es", page_token=page_token)
-
-        except googlemaps.exceptions.ApiError as e:
-            print(e)
-            st.write(e)
-
-    return adict_list
+            adict_list.append(adict)
+        #print()
+    except ApiError as e:
+        print(e)
+        st.write(e)
+    return sort_dicts_by_keys(adict_list, keys=['puntaje', 'user_ratings_total'])
 
 
 
