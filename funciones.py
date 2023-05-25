@@ -79,7 +79,6 @@ def get_places(api_key, category, location, radius):
         location = f"{lat},{lng}"
         # Use the Google Places API to search for businesses in the specified location and category
         places_result = gmaps.places(query=category, location=location, radius=radius)
-        print(places_result)
 
         # Extract the place IDs for each result
         place_ids = [result['place_id'] for result in places_result['results']]
@@ -88,27 +87,23 @@ def get_places(api_key, category, location, radius):
         details_result = [gmaps.place(place_id, fields=['name', 'rating', 'user_ratings_total', 'formatted_address', 'formatted_phone_number']) for place_id in place_ids]
 
         # Print the details for each place
-        for place in details_result: # place["result"]["parameter"]
-            adict = {}
-            if 'name' in place['result']:
-                adict['name'] = place['result']['name']
-            if 'formatted_address' in place['result']:
-                adict['formatted_address'] = place['result']['formatted_address']
-            if 'formatted_phone_number' in place['result']:
-                adict['formatted_phone_number'] = place['result']['formatted_phone_number']
-            if 'user_ratings_total' in place['result']:
-                adict['user_ratings_total'] = place['result']['user_ratings_total']
-                adict['puntaje'] = place['result']['rating'] + puntos_extra(place['result']['user_ratings_total'])
-            if 'rating' in place['result']:
-                adict['rating'] = place['result']['rating']
-            adict["category"] = category
-
-            adict_list.append(adict)
-        #print()
+        for place in details_result:
+            if 'formatted_address' in place['result'] and 'Panama' in place['result']['formatted_address'] and 'rating' in place['result'] and place['result']['rating'] >= 3.7:
+                adict = {}
+                adict['name'] = place['result'].get('name', None)
+                adict['formatted_address'] = place['result'].get('formatted_address', None)
+                adict['formatted_phone_number'] = place['result'].get('formatted_phone_number', None)
+                adict['user_ratings_total'] = place['result'].get('user_ratings_total', None)
+                if 'user_ratings_total' in place['result']:
+                    adict['puntaje'] = place['result']['rating'] + puntos_extra(place['result']['user_ratings_total'])
+                adict['rating'] = place['result'].get('rating', None)
+                adict["category"] = category
+                adict_list.append(adict)
     except ApiError as e:
         print(e)
         st.write(e)
     return sort_dicts_by_keys(adict_list, keys=['puntaje', 'user_ratings_total'])
+
 
 
 def read_pdf(file_obj):
