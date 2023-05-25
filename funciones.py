@@ -92,7 +92,7 @@ def get_places(api_key, categories, location, radius):
 
             # Print the details for each place
             for place in details_result:
-                if 'formatted_address' in place['result'] and 'Panama' in place['result']['formatted_address'] and 'rating' in place['result'] and place['result']['rating'] >= 3.7:
+                if 'rating' in place['result'] and place['result']['rating'] >= 3.7:
                     adict = {}
                     adict['name'] = place['result'].get('name', None)
                     adict['formatted_address'] = place['result'].get('formatted_address', None)
