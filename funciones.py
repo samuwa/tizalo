@@ -69,39 +69,43 @@ def sort_dicts_by_keys(dicts, keys, default_values=None, reverse=True):
     return sorted(dicts, key=sort_key_func, reverse=reverse)# Conseguir Proveedores
 # Conseguir Proveedores
 
-def get_places(api_key, category, location, radius):
+def get_places(api_key, categories, location, radius):
     adict_list = []
-    try:
-        gmaps = googlemaps.Client(api_key, timeout=10)
-        geocode_result = gmaps.geocode(location, region='pa')
-        lat = geocode_result[0]['geometry']['location']['lat']
-        lng = geocode_result[0]['geometry']['location']['lng']
-        location = f"{lat},{lng}"
-        # Use the Google Places API to search for businesses in the specified location and category
-        places_result = gmaps.places(query=category, location=location, radius=radius)
+    categories = categories.split(',')
+    for category in categories:
+        category = category.strip()
+        try:
+            gmaps = googlemaps.Client(api_key, timeout=10)
+            geocode_result = gmaps.geocode(location, region='pa')
+            lat = geocode_result[0]['geometry']['location']['lat']
+            lng = geocode_result[0]['geometry']['location']['lng']
+            location = f"{lat},{lng}"
 
-        # Extract the place IDs for each result
-        place_ids = [result['place_id'] for result in places_result['results']]
+            # Use the Google Places API to search for businesses in the specified location and category
+            places_result = gmaps.places(query=category, location=location, radius=radius)
 
-        # Use the Google Places API to get the details for each place, including its reviews, address, and phone number
-        details_result = [gmaps.place(place_id, fields=['name', 'rating', 'user_ratings_total', 'formatted_address', 'formatted_phone_number']) for place_id in place_ids]
+            # Extract the place IDs for each result
+            place_ids = [result['place_id'] for result in places_result['results']]
 
-        # Print the details for each place
-        for place in details_result:
-            if 'formatted_address' in place['result'] and 'Panama' in place['result']['formatted_address'] and 'rating' in place['result'] and place['result']['rating'] >= 3.7:
-                adict = {}
-                adict['name'] = place['result'].get('name', None)
-                adict['formatted_address'] = place['result'].get('formatted_address', None)
-                adict['formatted_phone_number'] = place['result'].get('formatted_phone_number', None)
-                adict['user_ratings_total'] = place['result'].get('user_ratings_total', None)
-                if 'user_ratings_total' in place['result']:
-                    adict['puntaje'] = place['result']['rating'] + puntos_extra(place['result']['user_ratings_total'])
-                adict['rating'] = place['result'].get('rating', None)
-                adict["category"] = category
-                adict_list.append(adict)
-    except ApiError as e:
-        print(e)
-        st.write(e)
+            # Use the Google Places API to get the details for each place, including its reviews, address, and phone number
+            details_result = [gmaps.place(place_id, fields=['name', 'rating', 'user_ratings_total', 'formatted_address', 'formatted_phone_number']) for place_id in place_ids]
+
+            # Print the details for each place
+            for place in details_result:
+                if 'formatted_address' in place['result'] and 'Panama' in place['result']['formatted_address'] and 'rating' in place['result'] and place['result']['rating'] >= 3.7:
+                    adict = {}
+                    adict['name'] = place['result'].get('name', None)
+                    adict['formatted_address'] = place['result'].get('formatted_address', None)
+                    adict['formatted_phone_number'] = place['result'].get('formatted_phone_number', None)
+                    adict['user_ratings_total'] = place['result'].get('user_ratings_total', None)
+                    if 'user_ratings_total' in place['result']:
+                        adict['puntaje'] = place['result']['rating'] + puntos_extra(place['result']['user_ratings_total'])
+                    adict['rating'] = place['result'].get('rating', None)
+                    adict["category"] = category
+                    adict_list.append(adict)
+        except ApiError as e:
+            print(e)
+            st.write(e)
     return sort_dicts_by_keys(adict_list, keys=['puntaje', 'user_ratings_total'])
 
 
