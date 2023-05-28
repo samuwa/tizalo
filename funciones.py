@@ -67,7 +67,16 @@ def sort_dicts_by_keys(dicts, keys, default_values=None, reverse=True):
     def sort_key_func(item):
         return [item.get(key, default_value) for key, default_value in zip(keys, default_values)]
 
-    return sorted(dicts, key=sort_key_func, reverse=reverse)# Conseguir Proveedores
+#     return sorted(dicts, key=sort_key_func, reverse=reverse)# Conseguir Proveedores
+    # Ensure only unique dictionaries are in the list
+    sorted_tuples = [tuple(d.items()) for d in dicts]
+    unique_tuples = list(set(sorted_tuples))
+    unique_dicts = [dict(t) for t in unique_tuples]
+
+    # Sort the dictionaries again
+    sorted_unique_dicts = sorted(unique_dicts, key=sort_key_func, reverse=reverse)
+
+    return sorted_unique_dicts
 # Conseguir Proveedores
 
 def get_places(api_key, category, location, radius, region, token=None):
