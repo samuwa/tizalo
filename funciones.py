@@ -69,46 +69,62 @@ def sort_dicts_by_keys(dicts, keys, default_values=None, reverse=True):
     return sorted(dicts, key=sort_key_func, reverse=reverse)# Conseguir Proveedores
 # Conseguir Proveedores
 
-def get_places(api_key, category, location, radius):
-    adict_list = []
-    try:
-        gmaps = googlemaps.Client(api_key, timeout=10)
-        geocode_result = gmaps.geocode(location, region='pa')
-        lat = geocode_result[0]['geometry']['location']['lat']
-        lng = geocode_result[0]['geometry']['location']['lng']
-        location = f"{lat},{lng}"
-        # Use the Google Places API to search for businesses in the specified location and category
-        places_result = gmaps.places(query=category, location=location, radius=radius, region='pa')
-        print(places_result)
+def get_places(api_key, category, location, radius, region, token=None):
+    places_list = []
+    places_list1 = []
 
-        # Extract the place IDs for each result
-        place_ids = [result['place_id'] for result in places_result['results']]
+    # Establish connection
+    gmaps = googlemaps.Client(api_key)
 
-        # Use the Google Places API to get the details for each place, including its reviews, address, and phone number
-        details_result = [gmaps.place(place_id, fields=['name', 'rating', 'user_ratings_total', 'formatted_address', 'formatted_phone_number']) for place_id in place_ids]
 
-        # Print the details for each place
-        for place in details_result: # place["result"]["parameter"]
-            adict = {}
-            if 'name' in place['result']:
-                adict['name'] = place['result']['name']
-            if 'formatted_address' in place['result']:
-                adict['formatted_address'] = place['result']['formatted_address']
-            if 'formatted_phone_number' in place['result']:
-                adict['formatted_phone_number'] = place['result']['formatted_phone_number']
-            if 'user_ratings_total' in place['result']:
-                adict['user_ratings_total'] = place['result']['user_ratings_total']
-                adict['puntaje'] = place['result']['rating'] + puntos_extra(place['result']['user_ratings_total'])
-            if 'rating' in place['result']:
-                adict['rating'] = place['result']['rating']
-            adict["category"] = category
+    # Geocode
+    geocode_result = gmaps.geocode(location, region='pa')
+    lat = geocode_result[0]['geometry']['location']['lat']
+    lng = geocode_result[0]['geometry']['location']['lng']
+    location = f"{lat},{lng}"
 
-            adict_list.append(adict)
-        #print()
-    except ApiError as e:
-        print(e)
-        st.write(e)
-    return sort_dicts_by_keys(adict_list, keys=['puntaje', 'user_ratings_total'])
+    # Get list of places
+    places = gmaps.places(query=category, location=location, radius=radius, region=region, page_token=token)
+
+    next_page = None
+
+    if 'next_page_token' in places.keys():
+        next_page = places['next_page_token']
+    # Clean first level dictionary
+    places = places['results']
+
+    # Set keys to extract
+    keys_to_extract = ['name', 'formatted_address', 'rating', 'user_ratings_total']
+
+    # Extract keys
+
+    for place in places:
+        places_list.append({k: place[k] for k in keys_to_extract if k in place})
+
+    counter = 0
+    for place in places_list:
+        if place['rating'] < 3.7 or place['user_ratings_total'] < 3 or "Costa Rica" in place['formatted_address'] or "Colombia" in place['formatted_address']:
+          pass
+        else:
+            places_list1.append(place)
+        counter += 1
+
+    # Get the phone number using 'place' function instead of 'places'
+    counter = 0
+    for place in places_list:
+
+        x = gmaps.place(places[counter]['place_id'], fields=['formatted_phone_number'])
+        if 'formatted_phone_number' in x['result'].keys():
+            place['formatted_phone_number'] = x['result']['formatted_phone_number']
+
+        if 'rating' and 'user_ratings_total' in place.keys():
+            place['puntaje'] = place['rating'] + puntos_extra(place['user_ratings_total'])
+
+        counter += 1
+    # Add puntaje
+
+
+    return places_list1, next_page # Next page is None of no next page results
 
 
 
