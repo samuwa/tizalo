@@ -10,8 +10,6 @@ import pandas as pd
 import re
 
 # Next page session state:
-if 'next_page' not in st.session_state:
-    st.session_state['next_page'] = None
 
 # Credenciales
 
@@ -95,6 +93,8 @@ def get_places(api_key, category, location, radius, region, token=None):
     places = gmaps.places(query=category, location=location, radius=radius, region=region, page_token=token)
 
     next_page = places.get('next_page_token', None)
+    if 'next_page' not in st.session_state:
+    st.session_state['next_page'] = None
     st.session_state['next_page'] = next_page
     st.write(next_page)
 
