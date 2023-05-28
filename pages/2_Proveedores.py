@@ -8,8 +8,7 @@ st.title(":mag: Proveedores")
 
 
 # session state for token
-if 'token' not in st.session_state:
-  st.session_state['token'] = None
+
 
 # Google api
 google_api = func.credenciales_google()
@@ -31,6 +30,8 @@ categoria = bform.text_input("Categoría")
 boton = bform.form_submit_button("Buscar")
 
 if boton:
+    if 'token' not in st.session_state:
+        st.session_state['token'] = None
     provs = func.get_places(api_key=google_api, location=ubicacion, radius=radio, category=categoria, region="pa")
     token = provs[1]
     provs = provs[0]
