@@ -9,6 +9,10 @@ import warnings
 import pandas as pd
 import re
 
+# Next page session state:
+if 'next_page' not in st.session_state:
+    st.session_state['next_page'] = None
+
 # Credenciales
 
 def gpt_answer(prompt):
@@ -91,6 +95,7 @@ def get_places(api_key, category, location, radius, region, token=None):
     places = gmaps.places(query=category, location=location, radius=radius, region=region, page_token=token)
 
     next_page = places.get('next_page_token', None)
+    st.session_state['next_page] = next_page
     st.write(next_page)
 
     # Clean first level dictionary
@@ -116,7 +121,7 @@ def get_places(api_key, category, location, radius, region, token=None):
         if 'rating' in place.keys() and 'user_ratings_total' in place.keys():
             place['puntaje'] = place['rating'] + puntos_extra(place['user_ratings_total'])
 
-    return places_list, next_page 
+    return places_list, st.session_state['next_page'] 
 
 
 
