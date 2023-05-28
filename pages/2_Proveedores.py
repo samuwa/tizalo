@@ -36,15 +36,19 @@ if boton:
     if type(token) is not str:
         pass
     else:
-        alist = func.get_places(api_key=google_api, location=ubicacion, radius=radio, category=categoria, region="pa", token=token)
-        for x in alist[0]:
-            provs.append(x)
+        try:
+            alist = func.get_places(api_key=google_api, location=ubicacion, radius=radio, category=categoria, region="pa", token=token)
+            for x in alist[0]:
+                provs.append(x)
+         except:
+            pass
 
 #         atoken = alist[1]
 #         if atoken is not None and type(atoken) == str:
 #             blist = func.get_places(api_key=google_api, location=ubicacion, radius=radio, category=categoria, region="pa", token=atoken)
 #             for x in blist[0]:
 #                 provs.append(x)
+     
 
     provs = func.sort_dicts_by_keys(provs, ['puntaje', 'user_ratings_total'])
     numeros = []
