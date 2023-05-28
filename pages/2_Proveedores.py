@@ -48,6 +48,9 @@ if boton:
             blist = func.get_places(api_key=google_api, location=ubicacion, radius=radio, category=categoria, region="pa", token=st.session_state['token'])
             for x in blist[0]:
                 provs.append(x)
+    
+    for key in st.session_state.keys()
+        del st.session_state[key]
      
 
     provs = func.sort_dicts_by_keys(provs, ['puntaje', 'user_ratings_total'])
