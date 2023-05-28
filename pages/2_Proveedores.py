@@ -34,7 +34,7 @@ if boton:
     st.write(type(token))
 
     if token is None:
-       break
+       pass
     else:
        alist = func.get_places(api_key=google_api, location=ubicacion, radius=radio, category=categoria, region="pa", token=token)
        for x in alist[0]:
