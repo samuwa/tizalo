@@ -71,60 +71,50 @@ def sort_dicts_by_keys(dicts, keys, default_values=None, reverse=True):
 
 def get_places(api_key, category, location, radius, region, token=None):
     places_list = []
-    places_list1 = []
 
     # Establish connection
     gmaps = googlemaps.Client(api_key)
 
-
     # Geocode
     geocode_result = gmaps.geocode(location, region='pa')
-    lat = geocode_result[0]['geometry']['location']['lat']
-    lng = geocode_result[0]['geometry']['location']['lng']
-    location = f"{lat},{lng}"
+    
+    # Check if geocode_result is not empty
+    if geocode_result:
+        lat = geocode_result[0]['geometry']['location']['lat']
+        lng = geocode_result[0]['geometry']['location']['lng']
+        location = f"{lat},{lng}"
+    else:
+        return "Invalid location provided", None
 
     # Get list of places
     places = gmaps.places(query=category, location=location, radius=radius, region=region, page_token=token)
 
-    next_page = None
+    next_page = places.get('next_page_token', None)
 
-    if 'next_page_token' in places.keys():
-        next_page = places['next_page_token']
     # Clean first level dictionary
     places = places['results']
 
     # Set keys to extract
-    keys_to_extract = ['name', 'formatted_address', 'rating', 'user_ratings_total']
+    keys_to_extract = ['name', 'formatted_address', 'rating', 'user_ratings_total', 'place_id']
 
     # Extract keys
-
     for place in places:
-        places_list.append({k: place[k] for k in keys_to_extract if k in place})
-
-    counter = 0
-    for place in places_list:
-        if place['rating'] < 3.7 or place['user_ratings_total'] < 3 or "Costa Rica" in place['formatted_address'] or "Colombia" in place['formatted_address']:
-          pass
-        else:
-            places_list1.append(place)
-        counter += 1
+        place_info = {k: place[k] for k in keys_to_extract if k in place}
+        # Check rating and user_ratings_total before appending
+        if place_info.get('rating', 0) >= 3.7 and place_info.get('user_ratings_total', 0) >= 3:
+            if not ("Costa Rica" in place_info['formatted_address'] or "Colombia" in place_info['formatted_address']):
+                places_list.append(place_info)
 
     # Get the phone number using 'place' function instead of 'places'
-    counter = 0
     for place in places_list:
-
-        x = gmaps.place(places[counter]['place_id'], fields=['formatted_phone_number'])
+        x = gmaps.place(place['place_id'], fields=['formatted_phone_number'])
         if 'formatted_phone_number' in x['result'].keys():
             place['formatted_phone_number'] = x['result']['formatted_phone_number']
 
-        if 'rating' and 'user_ratings_total' in place.keys():
+        if 'rating' in place.keys() and 'user_ratings_total' in place.keys():
             place['puntaje'] = place['rating'] + puntos_extra(place['user_ratings_total'])
 
-        counter += 1
-    # Add puntaje
-
-
-    return places_list1, next_page # Next page is None of no next page results
+    return places_list, next_page 
 
 
 
