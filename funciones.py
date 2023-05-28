@@ -94,7 +94,7 @@ def get_places(api_key, category, location, radius, region, token=None):
 
     next_page = places.get('next_page_token', None)
     if 'next_page' not in st.session_state:
-    st.session_state['next_page'] = None
+        st.session_state['next_page'] = None
     st.session_state['next_page'] = next_page
     st.write(next_page)
 
