@@ -73,7 +73,7 @@ def get_places(api_key, category, location, radius, region, token=None):
     places_list = []
 
     # Establish connection
-    gmaps = googlemaps.Client(api_key)
+    gmaps = googlemaps.Client(credenciales_google())
 
     # Geocode
     geocode_result = gmaps.geocode(location, region='pa')
