@@ -30,11 +30,13 @@ if boton:
     provs = func.get_places(api_key=google_api, location=ubicacion, radius=radio, category=categoria, region="pa")
     token = provs[1]
     provs = provs[0]
+    
+    st.write(token)
 
-    if token is not None:
-        alist = func.get_places(api_key=google_api, location=ubicacion, radius=radio, category=categoria, region="pa", token=token)
-        for x in alist[0]:
-            provs.append(x)
+#     if token is not None:
+#         alist = func.get_places(api_key=google_api, location=ubicacion, radius=radio, category=categoria, region="pa", token=token)
+#         for x in alist[0]:
+#             provs.append(x)
 
 #         atoken = alist[1]
 #         if atoken is not None and type(atoken) == str:
