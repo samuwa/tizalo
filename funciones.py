@@ -95,7 +95,7 @@ def get_places(api_key, category, location, radius, region, token=None):
     places = gmaps.places(query=category, location=location, radius=radius, region=region, page_token=token)
 
     next_page = places.get('next_page_token', None)
-    st.session_state['next_page] = next_page
+    st.session_state['next_page'] = next_page
     st.write(next_page)
 
     # Clean first level dictionary
