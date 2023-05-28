@@ -7,6 +7,10 @@ import streamlit as st
 st.title(":mag: Proveedores")
 
 
+# session state for token
+if 'token' not in st.session_state:
+  st.session_state['token'] = None
+
 # Google api
 google_api = func.credenciales_google()
 # Categorías:
@@ -31,8 +35,10 @@ if boton:
     token = provs[1]
     provs = provs[0]
     
+    st.session_state['token'] = token
+    
     if token != None:
-        alist = func.get_places(api_key=google_api, location=ubicacion, radius=radio, category=categoria, region="pa", token=token)
+        alist = func.get_places(api_key=google_api, location=ubicacion, radius=radio, category=categoria, region="pa", token=st.session_state['token'])
         for x in alist[0]:
             provs.append(x)
 
