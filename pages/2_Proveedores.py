@@ -37,7 +37,7 @@ if boton:
     provs = provs[0]
     
     st.session_state['token'] = token
-    st.write(st.session_state['token'])
+    st.write(type(st.session_state['token']))
     
     if token != None:
         alist = func.get_places(api_key=google_api, location=ubicacion, radius=radio, category=categoria, region="pa", token=st.session_state['token'])
