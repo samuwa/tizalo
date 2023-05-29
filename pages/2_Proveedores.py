@@ -43,7 +43,7 @@ if boton:
         atoken = alist[1]
         if atoken is not None:
             st.session_state['token'] = atoken
-            blist = func.get_places(api_key=google_api, location=ubicacion, radius=radio, category=categoria, region="pa", token=atoken])
+            blist = func.get_places(api_key=google_api, location=ubicacion, radius=radio, category=categoria, region="pa", token=atoken)
             for x in blist[0]:
                 provs.append(x)
      
