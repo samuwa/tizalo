@@ -55,7 +55,7 @@ if boton:
                 provs.append(x)
                 
      for key in st.session_state.keys():
-         del st.session_state[key]
+        del st.session_state[key]
      
 
     provs = func.sort_dicts_by_keys(provs, ['puntaje', 'user_ratings_total'])
