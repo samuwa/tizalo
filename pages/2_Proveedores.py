@@ -1,6 +1,7 @@
 import streamlit as st
 import funciones as func
 import streamlit as st
+import time
 
 
 
@@ -36,12 +37,14 @@ if boton:
     
     
     if token != None:
+        time.sleep(2)
         alist = func.get_places(api_key=google_api, location=ubicacion, radius=radio, category=categoria, region="pa", token='token')
         for x in alist[0]:
             provs.append(x)
 
         atoken = alist[1]
         if atoken is not None:
+            time.sleep(2)
             st.session_state['token'] = atoken
             blist = func.get_places(api_key=google_api, location=ubicacion, radius=radio, category=categoria, region="pa", token=atoken)
             for x in blist[0]:
