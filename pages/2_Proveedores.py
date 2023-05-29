@@ -35,18 +35,27 @@ if boton:
     token = provs[1]
     provs = provs[0]
     
+    if 'token' not in st.session_state():
+        st.session_state['token'] = None
     
-#     if token != None:
-#         alist = func.get_places(api_key=google_api, location=ubicacion, radius=radio, category=categoria, region="pa", token='token')
-#         for x in alist[0]:
-#             provs.append(x)
+    
+    if token != None:
+        st.session_state['token'] = token
+        time.sleep(2)
+        alist = func.get_places(api_key=google_api, location=ubicacion, radius=radio, category=categoria, region="pa", token=st.session_state['token'])
+        for x in alist[0]:
+            provs.append(x)
 
-#         atoken = alist[1]
-#         if atoken is not None:
-#             st.session_state['token'] = atoken
-#             blist = func.get_places(api_key=google_api, location=ubicacion, radius=radio, category=categoria, region="pa", token=atoken)
-#             for x in blist[0]:
-#                 provs.append(x)
+        atoken = alist[1]
+        if atoken is not None:
+            st.session_state['token'] = atoken
+            time.sleep(2)
+            blist = func.get_places(api_key=google_api, location=ubicacion, radius=radio, category=categoria, region="pa", token=st.session_state['token'])
+            for x in blist[0]:
+                provs.append(x)
+                
+     for key in st.session_state.keys():
+         del st.session_state[key]
      
 
     provs = func.sort_dicts_by_keys(provs, ['puntaje', 'user_ratings_total'])
