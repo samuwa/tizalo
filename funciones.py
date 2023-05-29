@@ -93,7 +93,7 @@ def get_places(api_key, category, location, radius, region, token=None):
         lat = geocode_result[0]['geometry']['location']['lat']
         lng = geocode_result[0]['geometry']['location']['lng']
         location = f"{lat},{lng}"
-        st.write(location)
+        
     else:
         return "Invalid location provided", None
 
@@ -102,7 +102,6 @@ def get_places(api_key, category, location, radius, region, token=None):
 
     next_page = places.get('next_page_token', None)
 
-    st.write(next_page)
 
     # Clean first level dictionary
     places = places['results']
