@@ -127,7 +127,7 @@ def get_places(api_key, category, location, radius, region, token=None):
         if 'rating' in place.keys() and 'user_ratings_total' in place.keys():
             place['puntaje'] = place['rating'] + puntos_extra(place['user_ratings_total'])
 
-    return places_list, 'next_page'
+    return places_list, next_page
 
 
 
