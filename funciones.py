@@ -167,6 +167,12 @@ def clean_number(x):
     return re.sub(r'\D', '', str(x))
 
 def create_csv(numbers, names):
+    
+    if len(numbers) > len(names):
+        names += [''] * (len(numbers) - len(names))  # Fill names with empty strings
+    elif len(names) > len(numbers):
+        numbers += [''] * (len(names) - len(numbers))
+        
     # Convert the input list to a Pandas DataFrame
     df = pd.DataFrame({'number': numbers, 'name': names})
 
