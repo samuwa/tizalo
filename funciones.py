@@ -166,10 +166,9 @@ def summarize_pdf(api_key, pdf_file_obj):
 def clean_number(x):
     return re.sub(r'\D', '', str(x))
 
-
-def create_csv(numbers):
+def create_csv(numbers, names):
     # Convert the input list to a Pandas DataFrame
-    df = pd.DataFrame(numbers, columns=['number'])
+    df = pd.DataFrame({'number': numbers, 'name': names})
 
     # Remove non-numeric elements from the list and convert to int with "507" added to the beginning
     df['number'] = df['number'].apply(clean_number)
@@ -178,15 +177,14 @@ def create_csv(numbers):
     # Filter rows with exactly eleven digits
     df = df[df['number'].str.len() == 11]
 
+    # Convert cleaned numbers to integers
     df['number'] = pd.to_numeric(df['number'], downcast='integer', errors='coerce')
 
-    # Add empty columns for "body" and "name"
+    # Add empty column for "body"
     df['body'] = ''
-    df['name'] = ''
 
     # Rearrange the columns in the desired order
     df = df[['number', 'body', 'name']]
-    return df.to_csv(index=False, encoding='utf-8').encode('utf-8')
-
+    
     # Write the data to a CSV file and return as byte string
     return df.to_csv(index=False, encoding='utf-8').encode('utf-8')
