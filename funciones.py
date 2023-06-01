@@ -114,7 +114,7 @@ def get_places(api_key, category, location, radius, region, token=None):
         place_info = {k: place[k] for k in keys_to_extract if k in place}
         # Check rating and user_ratings_total before appending
         if place_info.get('rating', 0) >= 3.7 and place_info.get('user_ratings_total', 0) >= 3:
-            if not ("Costa Rica" in place_info['formatted_address'] or "Colombia" in place_info['formatted_address']):
+            if not ("Costa Rica" in place_info['formatted_address'] or "Colombia" in place_info['formatted_address']or "Ecuador" in place_info['formatted_address']or "Mexico" in place_info['formatted_address']):
                 places_list.append(place_info)
 
     # Get the phone number using 'place' function instead of 'places'
