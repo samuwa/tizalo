@@ -60,13 +60,17 @@ if boton:
 
     provs = func.sort_dicts_by_keys(provs, ['puntaje', 'user_ratings_total'])
     numeros = []
+    nombres = []
 
     for x in provs:
         if 'formatted_phone_number' in provs[provs.index(x)]:
             numeros.append(x['formatted_phone_number'])
+        if 'name' in provs[provs.index(x)]:
+            nombres.append(x['name'])
 
 
-    st.download_button(label="**Descargar números**", data=func.create_csv(numeros),file_name=f'numeros_proveedores.csv', mime='text/csv')
+
+    st.download_button(label="**Descargar números**", data=func.create_csv(numeros, nombres),file_name=f'numeros_proveedores.csv', mime='text/csv')
     for x in provs:
         if 'name' in provs[provs.index(x)].keys():
             st.write(f'Nombre: **{provs[provs.index(x)]["name"]}**')
