@@ -18,7 +18,7 @@ def gpt_answer(prompt):
     openai.api_key = openai_key
     model_engine = "text-davinci-003"
 
-    prompt = f"somos una empresa dedicada a cotizar productos y servicios en representación de nuestros clientes. Que profesional o tipo de empresa debemos contactar para cotizar {prompt} y dime las preguntas mas importantes que debo hacerle previamente a mi cliente para tener toda la información necesaria para cotizar."
+    prompt = f"somos una empresa dedicada a cotizar productos y servicios en representación de nuestros clientes. Que profesional o tipos de empresas debemos contactar para cotizar {prompt} y dime las preguntas mas importantes que debo hacerle previamente a mi cliente para tener toda la información necesaria para cotizar."
 
     max_tokens = 1024
 
