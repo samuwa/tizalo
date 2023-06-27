@@ -6,7 +6,7 @@ import streamlit as st
 if "df" not in st.session_state:
     st.session_state.df = None
 
-st.session_state.df = pd.read_csv('todos_productos.csv')
+st.session_state.df = pd.read_csv('pages/todos_productos.csv')
 
 st.title("Tiendas Online Panamá")
 
