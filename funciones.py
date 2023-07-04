@@ -16,7 +16,8 @@ def gpt_answer(prompt):
     openai_key = st.secrets['GPT_API']
 
     openai.api_key = openai_key
-    model_engine = "text-davinci-003"
+    # model_engine = "text-davinci-003"
+    model_engine = "gpt-4"
 
     prompt = f"somos una empresa dedicada a cotizar productos y servicios en representación de nuestros clientes. Que profesional o tipos de empresas debemos contactar para cotizar {prompt} y dime las preguntas mas importantes que debo hacerle previamente a mi cliente para tener toda la información necesaria para cotizar."
 
