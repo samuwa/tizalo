@@ -17,23 +17,31 @@ def gpt_answer(prompt):
 
     openai.api_key = openai_key
     # model_engine = "text-davinci-003"
-    model_engine = "gpt-4"
 
     prompt = f"somos una empresa dedicada a cotizar productos y servicios en representación de nuestros clientes. Que profesional o tipos de empresas debemos contactar para cotizar {prompt} y dime las preguntas mas importantes que debo hacerle previamente a mi cliente para tener toda la información necesaria para cotizar."
 
-    max_tokens = 1024
+    # max_tokens = 1024
 
-    completion = openai.Completion.create(
-        engine=model_engine,
-        prompt=prompt,
-        max_tokens=max_tokens,
-        temperature=0.5,
-        top_p=1,
-        frequency_penalty=0,
-        presence_penalty=0
-    )
+    # completion = openai.Completion.create(
+    #     engine=model_engine,
+    #     prompt=prompt,
+    #     max_tokens=max_tokens,
+    #     temperature=0.5,
+    #     top_p=1,
+    #     frequency_penalty=0,
+    #     presence_penalty=0
+    # )
+    message=[{"role": "user", "content": gpt_prompt}]
+    response = openai.ChatCompletion.create(
+    model="gpt-4",
+    messages = message,
+    temperature=0.2,
+    max_tokens=1000,
+    frequency_penalty=0.0)
 
-    return completion.choices[0].text
+
+    # return completion.choices[0].text
+    return response
 
 
 
