@@ -41,7 +41,7 @@ def gpt_answer(prompt):
 
 
     # return completion.choices[0].text
-    return response.choices.[0].text
+    return response['choices'][0]['message'].text
 
 
 
