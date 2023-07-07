@@ -65,7 +65,10 @@ elif tipo_de_busqueda == "Por categoría":
 
     filtered_df = st.session_state.df[(st.session_state.df['category'].isin(categorias))&(st.session_state.df['website'].isin(tiendas))]
     filtered_df = filtered_df.drop(['page', 'availability', 'time'], axis=1)
-    filtered_df=search(producto, filtered_df)
+    if len(producto) >= 1:
+        filtered_df=search(producto, filtered_df)
+    else:
+        pass
 
     st.dataframe(filtered_df,use_container_width=True)
     
