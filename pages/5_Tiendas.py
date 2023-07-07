@@ -59,17 +59,20 @@ if tipo_de_busqueda == "Por nombre de producto":
 elif tipo_de_busqueda == "Por categoría":
     col1, col2 = st.columns(2)
 
-    categorias = col1.multiselect("Categorías", np.sort(st.session_state.df['category'].unique(),axis=None), default=st.session_state.df['category'].unique())
-    tiendas = col2.multiselect("Tiendas", np.sort(st.session_state.df['website'].unique(),axis=None), default=st.session_state.df['website'].unique())
+    categorias = col1.multiselect("Categorías", np.sort(st.session_state.df['category'].unique(),axis=None))
+    tiendas = col2.multiselect("Tiendas", np.sort(st.session_state.df['website'].unique(),axis=None))
     producto = st.text_input("Características del producto")
-
-    filtered_df = st.session_state.df[(st.session_state.df['category'].isin(categorias))&(st.session_state.df['website'].isin(tiendas))]
-    filtered_df = filtered_df.drop(['page', 'availability', 'time'], axis=1)
+    filtered_df = st.session_state.df.drop(['page', 'availability', 'time'], axis=1)
+    if len(categorias) >= 1:
+        filtered_df = filtered_df[(st.session_state.df['category'].isin(categorias))]
+    if len(tiendas) >= 1:
+        filtered_df = filtered_df[(st.session_state.df['website'].isin(tiendas))]
+    
     if len(producto) >= 1:
         filtered_df=search(producto, filtered_df)
     else:
         pass
 
-    st.dataframe(filtered_df,use_container_width=True)
+    st.dataframe(filtered_df.head(200),use_container_width=True)
     
                                   
