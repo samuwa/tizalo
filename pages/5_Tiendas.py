@@ -10,7 +10,7 @@ st.session_state.df = pd.read_csv('pages/todos_productos.csv')
 
 st.title("Tiendas Online Panamá")
 
-producto = st.text_input("Qué producto busca?")
+
 
 
 def search(query,df):
@@ -32,6 +32,7 @@ def search(query,df):
 tipo_de_busqueda = st.radio("Selecciona un tipo de búsqueda", ["Por nombre de producto", "Por categoría"])
 
 if tipo_de_busqueda == "Por nombre de producto":
+    producto = st.text_input("Qué producto busca?")
     if len(producto) >= 1:
         filtered_df = st.session_state.df.drop(['page', 'availability', 'time'], axis=1)
     
