@@ -1,5 +1,6 @@
 import pandas as pd
 import streamlit as st
+import numpy as np
 
 
 
@@ -58,7 +59,7 @@ if tipo_de_busqueda == "Por nombre de producto":
 elif tipo_de_busqueda == "Por categoría":
     col1, col2 = st.columns(2)
 
-    categorias = col1.multiselect("Categorías", st.session_state.df['category'].unique().sort_values(ascending=True))
+    categorias = col1.multiselect("Categorías", np.sort(st.session_state.df['category'].unique(),axis=None))
     tiendas = col2.multiselect("Tiendas", st.session_stat.df['website'].unique().sort_values(ascending=True))
     producto = st.text_input("Características del producto")
 
