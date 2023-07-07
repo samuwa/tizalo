@@ -26,7 +26,10 @@ def search(query,df):
     query = '|'.join(query)
 
     # Return products where any word in the query is found in the 'name' column
-    return df[df['name'].str.contains(query, case=False, na=False)]
+
+    # New columns
+    df['search'] = df['name'] + " " + df["brand"] + " " + df["category"]
+    return df[df['search'].str.contains(query, case=False, na=False)]
 
 
 
