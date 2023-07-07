@@ -29,26 +29,42 @@ def search(query,df):
 
 
 
+tipo_de_busqueda = st.radio("Selecciona un tipo de búsqueda", ["Por nombre de producto", "Por categoría"])
 
-if len(producto) >= 1:
-    filtered_df = st.session_state.df.drop(['page', 'availability', 'time'], axis=1)
-
-    if ',' in producto:
-
-        filtered_df = search(producto, filtered_df)
+if tipo_de_busqueda == "Por nombre de producto":
+    if len(producto) >= 1:
+        filtered_df = st.session_state.df.drop(['page', 'availability', 'time'], axis=1)
+    
+        if ',' in producto:
+    
+            filtered_df = search(producto, filtered_df)
+        else:
+            filtered_df = filtered_df[filtered_df['name'].str.contains(producto, case=False, na=False)]
+    
+        col1, col2 = st.columns(2)
+    
+        tiendas = col1.multiselect("Filtrar tiendas", options=filtered_df['website'].unique(), default=filtered_df['website'].unique())
+    
+        marcas = col2.multiselect("Filtrar Marcas", options=filtered_df['brand'].unique(), default=filtered_df['brand'].unique())
+    
+        categorias = st.multiselect("Filtrar Categorías", options=filtered_df['category'].unique(), default=filtered_df['category'].unique())
+    
+        filtered_df = filtered_df[(filtered_df['website'].isin(tiendas)) & (filtered_df['brand'].isin(marcas))& (filtered_df['category'].isin(categorias))].sort_values("original_price")
+    
+        st.dataframe(filtered_df,use_container_width=True)
     else:
-        filtered_df = filtered_df[filtered_df['name'].str.contains(producto, case=False, na=False)]
-
+        pass
+elif tipo_de_busqueda == "Por categoría":
     col1, col2 = st.columns(2)
 
-    tiendas = col1.multiselect("Filtrar tiendas", options=filtered_df['website'].unique(), default=filtered_df['website'].unique())
+    categorias = col1.multiselect("Categorías", st.session_state.df['category'].unique().sort_values(ascending=True))
+    tiendas = col2.multiselect("Tiendas", st.session_stat.df['website'].unique().sort_values(ascending=True))
+    producto = st.text_input("Características del producto")
 
-    marcas = col2.multiselect("Filtrar Marcas", options=filtered_df['brand'].unique(), default=filtered_df['brand'].unique())
-
-    categorias = st.multiselect("Filtrar Categorías", options=filtered_df['category'].unique(), default=filtered_df['category'].unique())
-
-    filtered_df = filtered_df[(filtered_df['website'].isin(tiendas)) & (filtered_df['brand'].isin(marcas))& (filtered_df['category'].isin(categorias))].sort_values("original_price")
+    filtered_df = st.session_state.df[(st.session_state.df['category'].isin(categorias))&(st.session_state.df['website'].isin(tiendas))]
+    filtered_df = filtered_df.drop(['page', 'availability', 'time'], axis=1)
+    filtered_df=search(producto, filtered_df)
 
     st.dataframe(filtered_df,use_container_width=True)
-else:
-    pass
+    
+                                  
