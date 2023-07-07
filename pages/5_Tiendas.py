@@ -60,7 +60,7 @@ elif tipo_de_busqueda == "Por categoría":
     col1, col2 = st.columns(2)
 
     categorias = col1.multiselect("Categorías", np.sort(st.session_state.df['category'].unique(),axis=None))
-    tiendas = col2.multiselect("Tiendas", st.session_stat.df['website'].unique().sort_values(ascending=True))
+    tiendas = col2.multiselect("Tiendas", st.session_state.df['website'].unique().sort_values(ascending=True))
     producto = st.text_input("Características del producto")
 
     filtered_df = st.session_state.df[(st.session_state.df['category'].isin(categorias))&(st.session_state.df['website'].isin(tiendas))]
