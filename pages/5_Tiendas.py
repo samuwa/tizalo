@@ -74,5 +74,6 @@ elif tipo_de_busqueda == "Por categoría":
         pass
 
     st.dataframe(filtered_df.head(200),use_container_width=True)
+    st.write(f"{len(filtered_df)} resultados")
     
                                   
