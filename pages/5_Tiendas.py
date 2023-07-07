@@ -57,6 +57,7 @@ if tipo_de_busqueda == "Por nombre de producto":
         filtered_df = filtered_df[(filtered_df['website'].isin(tiendas)) & (filtered_df['brand'].isin(marcas))& (filtered_df['category'].isin(categorias))].sort_values("original_price")
     
         st.dataframe(filtered_df,use_container_width=True)
+        st.write(f"{len(filtered_df)} resultados")
     else:
         pass
 elif tipo_de_busqueda == "Por categoría":
