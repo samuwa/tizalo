@@ -33,7 +33,7 @@ def gpt_answer(prompt):
     # )
     message=[{"role": "user", "content": gpt_prompt}]
     response = openai.ChatCompletion.create(
-    model="gpt-3.5-turbo",
+    model="gpt-4",
     messages = message,
     temperature=0.2,
     max_tokens=1000,
