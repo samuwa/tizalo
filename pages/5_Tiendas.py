@@ -7,7 +7,7 @@ import numpy as np
 if "df" not in st.session_state:
     st.session_state.df = None
 
-st.session_state.df = pd.read_csv('pages/todos_productos.csv')
+st.session_state.df = pd.read_csv('todos_productos (1).csv')
 
 st.title("Tiendas Online Panamá")
 
