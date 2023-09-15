@@ -149,7 +149,8 @@ if 'provs' in st.session_state:
             nombres.append(x['name'])
 
     if numeros and nombres:
-        st.download_button(label="**Descargar números**", data=func.create_csv(numeros, nombres), file_name='numeros_proveedores.csv', mime='text/csv')
+        st.download_button(label="**Descargar números WhatsApp**", data=func.create_csv(numeros, nombres), file_name='numeros_proveedores.csv', mime='text/csv')
+        st.download_button(label="**Descargar números Celulares**", data=func.create_csv_10(numeros, nombres), file_name='numeros_proveedores.csv', mime='text/csv')
     
     for x in st.session_state['provs']:
        # Displaying each provider's details in the streamlit app
