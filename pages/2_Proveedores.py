@@ -9,7 +9,7 @@ st.title(":mag: Proveedores")
 
 # Session state for provs
 
-if provs not in st.session_state:
+if "provs" not in st.session_state:
   st.session_state.provs = None
 # session state for token
 
