@@ -203,3 +203,37 @@ def create_csv(numbers, names):
     
     # Write the data to a CSV file and return as byte string
     return df.to_csv(index=False, encoding='utf-8').encode('utf-8')
+
+# Numeros de celular
+
+def clean_number_10(x):
+    return re.sub(r'\D', '', str(x))
+
+def create_csv_10(numbers, names):
+    
+    if len(numbers) > len(names):
+        names += [''] * (len(numbers) - len(names))  # Fill names with empty strings
+    elif len(names) > len(numbers):
+        numbers += [''] * (len(names) - len(numbers))
+        
+    # Convert the input list to a Pandas DataFrame
+    df = pd.DataFrame({'number': numbers, 'name': names})
+
+    # Remove non-numeric elements from the list and convert to int with "507" added to the beginning
+    df['number'] = df['number'].apply(clean_number_10)
+    df['number'] = df['number'].apply(lambda x: '507' + x if not x.startswith('507') and len(x) == 7 else x)  # Modified condition to add '507' only to numbers with 7 digits
+
+    # Filter rows with exactly ten digits
+    df = df[df['number'].str.len() == 10]
+
+    # Convert cleaned numbers to integers
+    df['number'] = pd.to_numeric(df['number'], downcast='integer', errors='coerce')
+
+    # Add empty column for "body"
+    df['body'] = ''
+
+    # Rearrange the columns in the desired order
+    df = df[['number', 'body', 'name']]
+    
+    # Write the data to a CSV file and return as byte string
+    return df.to_csv(index=False, encoding='utf-8').encode('utf-8')
