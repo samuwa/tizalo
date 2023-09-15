@@ -101,7 +101,14 @@ bform = st.form("F2")
 
 # Location select box
 ubicacion = bform.selectbox("Ubicación", [
-    # Your list of locations here...
+    "Ciudad de Panamá, Panamá", "San Miguelito,Panamá, Panamá",
+    "Tocumen, Panamá, Panamá", "David, Chiriquí, Panamá", 
+    "Arraiján, Panamá Oeste, Panamá", "Colón, Colón, Panamá", 
+    "Chorrera, Panamá Oeste, Panamá", "Santiago, Veraguas, Panamá",
+    "Chitré, Herrera, Panamá", "Penonomé, Coclé, Panamá", 
+    "Aguadulce, Coclé, Panamá", "Las Tablas, Los Santos, Panamá", 
+    "Pedregal, Chiriquí, Panamá", "Arraiján, Panamá", 
+    "Capira, Panamá", "Chepo, Panamá"
 ])
 
 # Search radius and category text input
