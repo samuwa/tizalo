@@ -7,10 +7,7 @@ import time
 
 st.title(":mag: Proveedores")
 
-# Session state for provs
 
-if "provs" not in st.session_state:
-  st.session_state.provs = None
 # session state for token
 
 
@@ -34,9 +31,9 @@ categoria = bform.text_input("Categoría")
 boton = bform.form_submit_button("Buscar")
 
 if boton:
-    st.session_state.provs = func.get_places(api_key=google_api, location=ubicacion, radius=radio, category=categoria, region="pa")
-    token = st.session_state.provs[1]
-    st.session_state.provs = st.session_state.provs[0]
+    provs = func.get_places(api_key=google_api, location=ubicacion, radius=radio, category=categoria, region="pa")
+    token = provs[1]
+    provs = provs[0]
     
     if 'token' not in st.session_state:
         st.session_state['token'] = None
@@ -47,7 +44,7 @@ if boton:
         time.sleep(2)
         alist = func.get_places(api_key=google_api, location=ubicacion, radius=radio, category=categoria, region="pa", token=st.session_state['token'])
         for x in alist[0]:
-            st.session_state.provs.append(x)
+            provs.append(x)
 
         atoken = alist[1]
         if atoken is not None:
@@ -55,36 +52,36 @@ if boton:
             time.sleep(2)
             blist = func.get_places(api_key=google_api, location=ubicacion, radius=radio, category=categoria, region="pa", token=st.session_state['token'])
             for x in blist[0]:
-                st.session_state.provs.append(x)
+                provs.append(x)
                 
     for key in st.session_state.keys():
         del st.session_state[key]
      
 
-    st.session_state.provs = func.sort_dicts_by_keys(st.session_state.provs, ['puntaje', 'user_ratings_total'])
+    provs = func.sort_dicts_by_keys(provs, ['puntaje', 'user_ratings_total'])
     numeros = []
     nombres = []
 
-    for x in st.session_state.provs:
-        if 'formatted_phone_number' in st.session_state.provs[st.session_state.provs.index(x)]:
+    for x in provs:
+        if 'formatted_phone_number' in provs[provs.index(x)]:
             numeros.append(x['formatted_phone_number'])
-        if 'name' in st.session_state.provs[st.session_state.provs.index(x)]:
+        if 'name' in provs[provs.index(x)]:
             nombres.append(x['name'])
 
 
 
     st.download_button(label="**Descargar números**", data=func.create_csv(numeros, nombres),file_name=f'numeros_proveedores.csv', mime='text/csv')
-    for x in st.session_state.provs:
-        if 'name' in st.session_state.provs[st.session_state.provs.index(x)].keys():
-            st.write(f'Nombre: **{st.session_state.provs[st.session_state.provs.index(x)]["name"]}**')
-        if 'formatted_address' in st.session_state.provs[st.session_state.provs.index(x)].keys():
-            st.write(f'Dirección: {st.session_state.provs[st.session_state.provs.index(x)]["formatted_address"]}')
-        if 'formatted_phone_number' in st.session_state.provs[st.session_state.provs.index(x)].keys():
-            st.write(f'Teléfono: {st.session_state.provs[st.session_state.provs.index(x)]["formatted_phone_number"]}')
-        if 'user_ratings_total' in st.session_state.provs[st.session_state.provs.index(x)].keys():
-            st.write(f'N Reviews: {st.session_state.provs[st.session_state.provs.index(x)]["user_ratings_total"]}')
-        if 'rating' in st.session_state.provs[st.session_state.provs.index(x)].keys():
-            st.write(f'Rating: {st.session_state.provs[st.session_state.provs.index(x)]["rating"]}')
-        if 'puntaje' in st.session_state.provs[st.session_state.provs.index(x)].keys():
-            st.write(f'Puntaje: {st.session_state.provs[st.session_state.provs.index(x)]["puntaje"]}')
+    for x in provs:
+        if 'name' in provs[provs.index(x)].keys():
+            st.write(f'Nombre: **{provs[provs.index(x)]["name"]}**')
+        if 'formatted_address' in provs[provs.index(x)].keys():
+            st.write(f'Dirección: {provs[provs.index(x)]["formatted_address"]}')
+        if 'formatted_phone_number' in provs[provs.index(x)].keys():
+            st.write(f'Teléfono: {provs[provs.index(x)]["formatted_phone_number"]}')
+        if 'user_ratings_total' in provs[provs.index(x)].keys():
+            st.write(f'N Reviews: {provs[provs.index(x)]["user_ratings_total"]}')
+        if 'rating' in provs[provs.index(x)].keys():
+            st.write(f'Rating: {provs[provs.index(x)]["rating"]}')
+        if 'puntaje' in provs[provs.index(x)].keys():
+            st.write(f'Puntaje: {provs[provs.index(x)]["puntaje"]}')
         st.write('---------------------------------------------')
