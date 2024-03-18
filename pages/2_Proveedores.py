@@ -100,7 +100,7 @@ google_api = func.credenciales_google()
 bform = st.form("F2")
 
 # Location select box
-ubicacion = bform.selectbox("Ubicación", [
+ubicacion = bform.selectbox("Ubicación", ["Caracas, Venezuela",
     "Ciudad de Panamá, Panamá", "San Miguelito,Panamá, Panamá",
     "Tocumen, Panamá, Panamá", "David, Chiriquí, Panamá", 
     "Arraiján, Panamá Oeste, Panamá", "Colón, Colón, Panamá", 
