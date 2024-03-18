@@ -112,7 +112,7 @@ ubicacion = bform.selectbox("Ubicación", ["Caracas, Venezuela",
 ])
 
 # Search radius and category text input
-radio = 5000
+radio = 10000
 categoria = bform.text_input("Categoría")
 
 # Submit button
