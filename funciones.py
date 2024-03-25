@@ -190,7 +190,7 @@ def create_csv(numbers, names):
     df['number'] = df['number'].apply(lambda x: '507' + x if not x.startswith('507') else x)
 
     # Filter rows with exactly eleven digits
-    df = df[df['number'].str.len() == 11]
+    #df = df[df['number'].str.len() == 11]
 
     # Convert cleaned numbers to integers
     df['number'] = pd.to_numeric(df['number'], downcast='integer', errors='coerce')
@@ -224,7 +224,7 @@ def create_csv_10(numbers, names):
     df['number'] = df['number'].apply(lambda x: '507' + x if not x.startswith('507') and len(x) == 7 else x)  # Modified condition to add '507' only to numbers with 7 digits
 
     # Filter rows with exactly ten digits
-    df = df[df['number'].str.len() == 10]
+    #df = df[df['number'].str.len() == 10]
 
     # Convert cleaned numbers to integers
     df['number'] = pd.to_numeric(df['number'], downcast='integer', errors='coerce')
